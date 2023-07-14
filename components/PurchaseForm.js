@@ -54,7 +54,7 @@ export default function PurchaseForm () {
     }
 
     async function updateCredit(creditAmount){
-        console.log(creditAmount)
+        // console.log(creditAmount)
         const creditPackage = {amount:creditAmount};
         await axios.put('/api/credits', creditPackage);
     }
