@@ -58,7 +58,9 @@ export default function PurchaseForm () {
     }
 
     function returnToTransaction() {
-        router.push('/transactions');
+        // setTitle('');
+        // setAmount('');
+        location.reload()
     }
 
     return (

@@ -17,7 +17,6 @@ export default function Nav({creditStatus}) {
         axios.get('/api/credits').then(response => {
             setCreditLog(response.data);
             if (!response.data) {
-                console.log("New transaction")
                 updateCredit();
             }
         });
@@ -54,7 +53,7 @@ export default function Nav({creditStatus}) {
                 Current Credit
                 {creditLog && (
                     <div className="bg-white flex-grow mt-2">
-                        ${creditLog.amount}
+                        ${creditLog.amount.toFixed(2)}
                     </div>
                 )}
             </div>
