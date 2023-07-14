@@ -25,15 +25,15 @@ export default function PurchaseForm () {
     const [transactionReturn, setTransactionReturn] = useState(false);
     const router = useRouter();
 
-    
-
     async function createTransaction(eventHandle) {
         eventHandle.preventDefault();
         const dataPackage = {title:title, amount:amount, type:"Purchase", status:"Unpaid"};
         await axios.get('/api/credits').then(response => {
             var creditLog = response.data;
-            if (response.data && amount) {
+            // ensures all data is submitted
+            if (response.data && amount && title) {
                 var newCredit = Number(creditLog.amount) - Number(amount);
+                // checks to see if credit limit crossed
                 if (newCredit >= 0) {
                     axios.post('/api/transactions', dataPackage);
                     updateCredit(newCredit);
@@ -58,8 +58,6 @@ export default function PurchaseForm () {
     }
 
     function returnToTransaction() {
-        // setTitle('');
-        // setAmount('');
         location.reload()
     }
 

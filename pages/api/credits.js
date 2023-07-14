@@ -8,11 +8,14 @@ export default async function handle(req, res) {
 
     await mongooseConnect();
 
+    // retrieve credit information
     if (method === "GET") {
         const transactionDoc = await Credit.findOne({title:"Credit"});
         // console.log(transactionDoc)
         res.json(transactionDoc);
     }
+    // create new entry in the event that one is missing
+    // should not be needed (sanity case)
     if (method === "POST") {
         const {amount} = req.body;
         const transactionDoc = await Credit.create({
@@ -20,6 +23,7 @@ export default async function handle(req, res) {
         })
         res.json(transactionDoc);
     }
+    // update credit score
     if (method === "PUT") {
         const {amount} = req.body;
         const transactionDoc = await Credit.updateOne(

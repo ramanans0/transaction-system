@@ -9,6 +9,7 @@ import React from 'react';
 export default function Repayments() {
     const [repaymentLog, setRepaymentLog] = useState([]);
     
+    // get repayment logs
     useEffect(() => {
         axios.get('/api/repayments').then(response => {
             setRepaymentLog(response.data);

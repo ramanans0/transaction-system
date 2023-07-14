@@ -8,6 +8,7 @@ export default async function handle(req, res) {
     await mongooseConnect();
 
     if (method === "GET") {
+        // finds inidividual entry if id is provided
         if (req.query?.repaymentId) {
             res.json(await Repayment.findOne({title:req.query.repaymentId}));
         }
@@ -15,6 +16,7 @@ export default async function handle(req, res) {
             res.json(await Repayment.find());
         }
     }
+    // creates new entry
     if (method === "POST") {
         const {type, amount, count} = req.body;
         const repaymentDoc = await Repayment.create({

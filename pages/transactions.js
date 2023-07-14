@@ -18,12 +18,13 @@ export default function Transactions() {
     }, []);
 
     async function repay() {
-
+        // retrieve record of unpaid purchases and refunds
         const transactPurchase = await axios.get('/api/transactions?statusFilter=Unpaid&typeFilter=Purchase');
         const transactRefund = await axios.get('/api/transactions?statusFilter=Unpaid&typeFilter=Refund');
         if ((transactPurchase.data.length > 0) || (transactRefund.data.length > 0)){    
             const purchase = transactPurchase.data;
             const refund = transactRefund.data;
+            // update logs
             await Promise.all(purchase.map(async (transaction) => {
                 await axios.put('/api/transactions', {status:"Paid", amount:transaction.amount, title: transaction.title, type:transaction.type, _id:transaction._id});
             }));
@@ -32,12 +33,14 @@ export default function Transactions() {
             }));
             var creditValue = (await axios.get('/api/credits')).data;
             var creditDiff = creditValue.amount - 50;
+            // determine credit amount and payer
             var transactType = "User to Fizz";
             if (creditDiff > 0) {
                 transactType = "Fizz to User";
             }
             creditDiff = Math.abs(creditDiff);
             const transactLength = refund.length + purchase.length;
+            // perform transaction
             await axios.put('/api/credits', {amount:50});
             await axios.post('/api/repayments', {amount:creditDiff, count:transactLength, type:transactType});
         }
@@ -53,6 +56,7 @@ export default function Transactions() {
             var transaction = transact.data;
             // console.log(transaction)
             var amount = creditValue.amount + transaction.amount;
+            // refund transaction
             await axios.put('/api/credits', {amount});
             await axios.put('/api/transactions', {status:"Voided", amount:transaction.amount, title: transaction.title, type:transaction.type, _id:transaction._id});
             await axios.post('/api/transactions', {status:"Unpaid", amount:transaction.amount, title:transaction.title, type:"Refund"});
