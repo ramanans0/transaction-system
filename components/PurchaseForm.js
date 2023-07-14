@@ -42,9 +42,7 @@ export default function PurchaseForm () {
                 else {
                     setTitle('');
                     setAmount('');
-                    // location.reload();
                     setOverCredit(true);
-                    // Popup.queue(warningPopup);
                 }
             }
         });
@@ -53,10 +51,10 @@ export default function PurchaseForm () {
         returnToTransaction();
     }
 
-    async function updateCredit(creditAmount){
+    function updateCredit(creditAmount){
         // console.log(creditAmount)
         const creditPackage = {amount:creditAmount};
-        await axios.put('/api/credits', creditPackage);
+        axios.put('/api/credits', creditPackage);
     }
 
     function returnToTransaction() {
